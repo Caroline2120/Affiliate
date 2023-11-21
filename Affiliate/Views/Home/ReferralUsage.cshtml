@@ -1,0 +1,46 @@
+﻿@model Affiliate.Utility.ViewModel.ReferralUsage
+
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+    <div>
+        <h4 class="mb-3 mb-md-0"></h4>
+    </div>
+    <div class="d-flex align-items-center flex-wrap text-nowrap">
+        <a class="mb-3 mb-md-0" style="font-size: 1.25rem; margin-top: 0; font-weight: 500; line-height: 1.2; display: block; margin-block-start: 1.33em; margin-block-end: 1.33em; margin-inline-start: 0px; margin-inline-end: 0px;color:black;" href="@Model.referralLink">Referral Code : @Model.rCode  <i style="margin-left:10px" data-feather="copy"></i></a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title"></h6>
+                <div class="table-responsive">
+                    <table id="dataTableExample" class="table">
+                        <thead>
+                            <tr>
+                                <th class="pt-0">Used By</th>
+                                <th class="pt-0">Amount Paid</th>
+                                <th class="pt-0">Earnings</th>
+                                <th class="pt-0">Reg Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.ReferralUsage2 != null && Model.ReferralUsage2.Count > 0)
+                            {
+                                @foreach (var item in Model.ReferralUsage2)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Fullname)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.AmountPaid)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Earnings)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DateRegistered)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

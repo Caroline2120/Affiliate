@@ -1,0 +1,61 @@
+﻿<nav class="navbar top-navbar">
+    <div class="container">
+        <div class="navbar-content">
+            <div style="height:100px; width:200px;">
+                <img src="~/assets/images/EdurexAcademy.png" style="max-width:100%; height:auto; margin-top:10px;" />
+            </div>
+            <ul class="navbar-nav">
+                @*<li>
+            <a href="#" class="btn btn-link" style="margin-top: 15px; color: #058383 !important ">
+                <span>Back to Website</span>
+            </a>
+        </li>*@
+                @*<li>
+            <a asp-controller="Home" asp-action="Login" class="btn btn-primary" style="margin-top: 15px; background-color: #058383 !important ">
+                <span>Log In</span>
+            </a>
+        </li>*@
+                @if (Affiliate.Utility.GeneralClass.Email != "")
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: -10px; color: #058383 !important ">
+                            <i class="me-2 icon-md" data-feather="user"></i><span class="font-weight-medium ml-1 mr-1 d-none d-md-inline-block">Hi, @Affiliate.Utility.GeneralClass.FullName</span><i data-feather="chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">                            
+                            <ul class="list-unstyled">
+                                @*<li class="dropdown-item py-2">
+                                    <a  asp-controller="Home" asp-action="Profile" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="user"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                </li>*@
+                                <li class="dropdown-item py-2">
+                                    <a asp-controller="Home" asp-action="Logout" class="text-body ms-0">
+                                        <i class="me-2 icon-md" data-feather="log-out"></i>
+                                        <span>Log Out</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> @*<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 15px; color: #058383 !important ">
+                            <i data-feather="user"></i><span class="font-weight-medium ml-1 mr-1 d-none d-md-inline-block">Hi, @Affiliate.Utility.GeneralClass.FullName</span>
+                        </a>
+                        <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
+                            <ul class="profile-nav p-0 pt-3">
+                                <li class="nav-item">
+                                    <a asp-controller="Home" asp-action="Login" class="nav-link">
+                                        <i data-feather="log-out"></i>
+                                        <span>Log Out</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>*@}
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" style="margin-top: -25px; color: #058383 !important " data-toggle="horizontal-menu-toggle">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+    </div>
+</nav>
