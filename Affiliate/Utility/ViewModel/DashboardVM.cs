@@ -14,6 +14,7 @@ namespace Affiliate.Utility.ViewModel
         public List<StatesRecord> StateRecord { get; set; }
         public string rCode { get; set; }
         public string referralLink { get; set; }
+        public string Role { get; set; }
         public int totalReferralUsage { get; set; }
     }
     public class StatesRecord

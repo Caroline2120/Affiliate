@@ -53,7 +53,7 @@ namespace Affiliate.Controllers
             }
             GeneralClass.Email = "";
             GeneralClass.FullName = "";
-            GeneralClass.Role = 0;
+            GeneralClass.Role = "";
             return RedirectToAction(nameof(Login));
         }
         [HttpGet]
@@ -95,8 +95,10 @@ namespace Affiliate.Controllers
 
             if (paymentResponse.Item1 != null && paymentResponse.Item2 == "Signed In")
             {
-                _notyfService.Success("Login Successful", 10);
-                GeneralClass.Role = 0;
+               // _notyfService.Success("Login Successful", 10);
+                GeneralClass.Role = "";
+                HttpContext.Session.SetString(SessionUsername, paymentResponse.Item1.UserName.ToString());
+
                 return RedirectToAction("Dashboard", "Home", new { area = "" });
 
                 //GeneralClass.Email = dto.registerz.Email;
@@ -160,6 +162,7 @@ namespace Affiliate.Controllers
                 dashboardRecord.Programs = record.Programs;
                 dashboardRecord.rCode = record.rCode;
                 dashboardRecord.totalReferralUsage = record.totalReferralUsage;
+                dashboardRecord.Role  = record.Role;
                 dashboardRecord.referralLink = "https://my.edurex.academy/?code=" + record.rCode;
 
                 _notyfService.Success("Welcome back, " + user.Email, 10);
@@ -189,7 +192,7 @@ namespace Affiliate.Controllers
             {
                 HttpContext.Session.SetString(SessionUsername, userLogin.Item1.UserName.ToString());
 
-                _notyfService.Success("Welcome back, " + userLogin.Item1.Email, 10);
+               // _notyfService.Success("Welcome back, " + userLogin.Item1.Email, 10);
                 return RedirectToAction("Dashboard", "Home", new { area = "" });
 
             }
@@ -229,8 +232,8 @@ namespace Affiliate.Controllers
         //}
         public async Task<IActionResult> ValidateCode(LoginVM dto)
         {
-            GeneralClass.Role = (int)dto.role;
-            if (dto.role != UserRolesEnums.Marketing)
+            GeneralClass.Role = dto.role;
+            if (dto.role != "Marketing")
             {
                 //return RedirectToAction(nameof(Index));
                 //TempData["Role"] = dto.role;

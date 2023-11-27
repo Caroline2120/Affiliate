@@ -9,7 +9,7 @@ namespace Affiliate.Utility
     {
         public static string Email { get; set; }
         public static string FullName { get; set; }
-        public static int Role { get; set; }
+        public static string Role { get; set; }
 
     }
 }

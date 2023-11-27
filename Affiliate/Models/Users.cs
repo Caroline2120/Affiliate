@@ -34,8 +34,9 @@ namespace Affiliate.Models
         public string StudentNumber { get; set; }
         public string heardAboutUs { get; set; }
         public string PassportPath { get; set; }
-        public int RoleId { get; set; }
-        public AllUserRoles Role { get; set; }
+        public string DefaultRole { get; set; }
+        //public int RoleId { get; set; }
+        //public AllUserRoles Role { get; set; }
         public bool NYSC { get; set; } = false;
         public StaffDepEnums StaffDep { get; set; } = StaffDepEnums.None;
 

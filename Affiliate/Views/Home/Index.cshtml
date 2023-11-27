@@ -220,7 +220,7 @@
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <div class="mb-3">
-                                                    @if (Affiliate.Utility.GeneralClass.Role != null && Affiliate.Utility.GeneralClass.Role == 6)
+                                                    @if (Affiliate.Utility.GeneralClass.Role != null && Affiliate.Utility.GeneralClass.Role == "Staff")
                                                     {
                                                         <label class="form-label">Staff Id<span style="color:red">*</span></label>
                                                         <input type="text" class="form-control" asp-for="registerz.StaffId" placeholder="Enter staff Id" >

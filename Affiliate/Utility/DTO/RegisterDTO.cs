@@ -9,7 +9,7 @@ namespace Affiliate.Utility.DTO
     public class RegisterDTO
     {
         [Required]
-        public UserRolesEnums role { get; set; }
+        public string role { get; set; }
         [Required]
         public string Username { get; set; }
       

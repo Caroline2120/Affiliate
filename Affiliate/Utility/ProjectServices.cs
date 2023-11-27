@@ -17,12 +17,14 @@ namespace Affiliate.Utility
         private readonly ApplicationDBContext _context;
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ProjectServices(SignInManager<Users> signInManager, ApplicationDBContext context, UserManager<Users> userManager)
+        public ProjectServices(RoleManager<IdentityRole> roleManager, SignInManager<Users> signInManager, ApplicationDBContext context, UserManager<Users> userManager)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
         public async Task<List<ProgramCategory>> GetPrograms()
         {
@@ -151,10 +153,12 @@ namespace Affiliate.Utility
                 //count = count + 1;
                 var rCode = GenerateReferalCode();
                 string Id = dto.StaffId;
-                if(dto.role == UserRolesEnums.Freelance)
+                if (dto.role == "Freelance")
                 {
                     Id = rCode;
                 }
+                var defaR = await _roleManager.FindByNameAsync(dto.role);
+
                 var newUser = new Users
                 {
                     UserName = dto.Username,
@@ -173,7 +177,7 @@ namespace Affiliate.Utility
                     //UserId = $"{count:0000}",
                     //Role = dto.Role,
                     Status = UserStatusEnums.Active,
-                    RoleId = (int)dto.role,
+                    DefaultRole = defaR.Id,
                     StudentNumber = Id,
                     StaffDep = StaffDepEnums.None,
                     NYSC=false
@@ -183,6 +187,9 @@ namespace Affiliate.Utility
 
                 if (createdUser.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(newUser, dto.role);
+
+                    await _context.SaveChangesAsync();
                     //Add user program into DB
                     //-------------------------
                     var userAcct = new AffiliateUserAccount()
@@ -234,6 +241,12 @@ namespace Affiliate.Utility
             }
             else
             {
+                var userDefaultRole = await _roleManager.FindByIdAsync(existingUser.DefaultRole);
+                if(userDefaultRole.Name != "Staff" && userDefaultRole.Name != "Freelance")
+                {
+                    return new Tuple<Users, string>(null, "Your default role is not an affiliate.");
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(existingUser, dto.password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -273,7 +286,7 @@ namespace Affiliate.Utility
         public async Task<DashboardVM> DashboardRe(string email)
         {
 
-            var existingUser = await _userManager.Users.Include(x=>x.Role).Where(x=>x.Email == email).FirstOrDefaultAsync();
+            var existingUser = await _userManager.FindByEmailAsync(email);//.Users.Include(x=>x.Role).Where(x=>x.Email == email).FirstOrDefaultAsync();
 
 
             if (existingUser != null)
@@ -322,8 +335,11 @@ namespace Affiliate.Utility
                 }
 
                 var userA = await _context.AffiliateUserAccount.Include(x => x.Bank).Where(x => x.UserId == existingUser.Id).FirstOrDefaultAsync();
-
+                
                 var totalRCU = await _context.UserReferred.Where(x => x.ReferralId == existingUser.Id).CountAsync();
+
+                var UserDefa = await _roleManager.FindByIdAsync(existingUser.DefaultRole);
+                //var role = 
 
                 var result = new DashboardVM();
                 //result.fullName = existingUser.FirstName;
@@ -333,6 +349,7 @@ namespace Affiliate.Utility
                 result.StateRecord = stateList;
                 result.rCode = existingUser.ReferralCode;
                 result.totalReferralUsage = totalRCU;
+                result.Role = UserDefa.Name;
 
                 GeneralClass.FullName = existingUser.FirstName;
                 return result;
